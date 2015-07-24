@@ -119,7 +119,7 @@ SQLite Data Types ([sqlite.org](https://www.sqlite.org/datatype3.html))
 --
 ### Demo: The SQLite Prompt
 
-Double-click `sqlite3.exe` (or type `sqlite3` in your terminal)
+Double-click **sqlite3.exe** (or type `sqlite3` in your terminal)
 
     SQLite version 3.8.5 2014-08-15 22:37:57
     Enter ".help" for usage hints.
@@ -137,11 +137,11 @@ Open file:
 ### Demo: Creating a table
 Create table:
 
-    sqlite> create table playwrights (
-       ...> first_name text,
-       ...> last_name text,
-       ...> year_of_birth integer,
-       ...> year_of_death integer
+    sqlite> CREATE TABLE playwrights (
+       ...> first_name TEXT,
+       ...> last_name TEXT,
+       ...> year_of_birth INTEGER,
+       ...> year_of_death INTEGER
        ...> );
 
 List tables:
@@ -151,26 +151,33 @@ List tables:
 
 
 --
-### Exercise: Run sqlite and open the database
+### Exercise: Start sqlite3
 
-1. Put the `lit.db` file in the folder with `sqlite3.exe` (Windows)
-2. Double-click `sqlite3.exe`
-3. At the `sqlite>` prompt, type `.open lit.db`
-4. At the `sqlite>` prompt, type `.tables`
+#### Windows:
 
-Done? Try typing `.schema` at the `sqlite>` prompt
+1. Put the **lit.db** file in the folder with **sqlite3.exe**
+2. Double-click **sqlite3.exe**
+
+#### Mac / Linux:
+
+1. In terminal, cd to the directory where **lit.db** was downloaded
+2. Type **`sqlite3`**
+
+When you see `sqlite>`, type **`.open lit.db`**
 
 --
 ### What's inside?
 
-Tables. List them with `.tables`.
+Tables. List them with **`.tables`**.
 
     sqlite> .tables
     playwrights
 
+See table structure with **`.schema`**.
+
 To _query_ a table, you **SELECT** from it
 
-    sqlite> select * from playwrights;
+    sqlite> SELECT * FROM playwrights;
     William|Shakespeare|1564|1616
 
 --
@@ -178,12 +185,12 @@ To _query_ a table, you **SELECT** from it
 
 `.mode` and `.headers`
 
-1. Turn on headers with `.headers on`.
-2. Type `.mode` alone to see options.
+1. Turn on headers with **`.headers on`**.
+2. Type **`.mode`** alone to see options.
 3. Change the mode to `column`.
 
 
-    sqlite> select * from playwrights;
+    sqlite> SELECT * FROM playwrights;
     first_name  last_name    year_of_birth  year_of_death
     ----------  -----------  -------------  -------------
     William     Shakespeare  1564           1616
@@ -200,7 +207,7 @@ Done? Try a different mode like `line`.
 - *Column* order does matter!
 
 
-    sqlite> insert into playwrights values
+    sqlite> INSERT INTO playwrights VALUES
       ...> ('Arthur','Miller',1915,2005);
       # first_name, last_name, birth_year, death_year
 
@@ -210,11 +217,11 @@ Single quotes around names, end with a semicolon
 
 Inserting:
 
-    insert into playwrights values ('First','Last',1900,2000);
+    INSERT INTO playwrights VALUES ('First','Last',1900,2000);
 
 Selecting:
 
-    select * from playwrights;
+    SELECT * FROM playwrights;
 
 Sample Data:
 <table width="100%">
@@ -243,26 +250,68 @@ Sample Data:
 --
 ### Asking simple questions
 
+*...without altering the data*
+
+
 Sorting
 
-    select * from playwrights order by year_of_birth;
+    SELECT * FROM playwrights order by year_of_birth;
 
 Just want names?
 
-    select first_name, last_name from playwrights;
+    SELECT first_name, last_name FROM playwrights;
 
 
 Calculate age?
 
-    select last_name, year_of_death - year_of_birth from playwrights;
-    select avg(year_of_death - year_of_birth) from playwrights;
-
-None of these alter the data.
---
-### Importing a Spreadsheet / CSV
+    SELECT *, year_of_death - year_of_birth FROM playwrights;
+    SELECT AVG(year_of_death - year_of_birth) FROM playwrights;
+    SELECT COUNT(*), AVG(year_of_death - year_of_birth) FROM playwrights;
 
 
 --
+### Moving data between systems
+
+- Existing data in a database
+- Bringing data to analysis _(or analysis to data)_
+- Plaintext or CSV is universal
+
+--
+### Export to CSV
+
+Using `.header` and `.mode` [again](https://www.sqlite.org/cli.html)
+
+Just one new command: `.once`
+
+    sqlite> .header on
+    sqlite> .mode csv
+    sqlite> .once playwrights.csv
+    sqlite> SELECT * FROM playwrights;
+
+Exercise: Create a CSV file with data sorted by **last_name** that includes **age**.
+
+--
+### Import from CSV
+
+The `.import` command does this
+
+    .import file.csv table_name
+
+Two cases: creating a new table or importing to an existing table
+
+Let's import the **long_data.csv** file into a database
+
+--
+### Exercise: Importing a CSV
+
+    sqlite> .open long_data.db
+    sqlite> .mode csv
+    sqlite> .import long_data.csv long_data
+
+Now we can query long_data. What's the schema?
+
+--
+### Data Frames
 
 Leftovers
 - foreign keys/relationals
