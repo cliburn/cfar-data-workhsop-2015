@@ -204,7 +204,7 @@ Done? Try a different mode like `line`.
       ...> ('Arthur','Miller',1915,2005);
       # first_name, last_name, birth_year, death_year
 
-Statements always end with a semicolon
+Single quotes around names, end with a semicolon
 --
 ### Exercise: Add some rows
 
@@ -239,6 +239,27 @@ Sample Data:
     </tr>
 </tbody>
 </table>
+
+--
+### Asking simple questions
+
+Sorting
+
+    select * from playwrights order by year_of_birth;
+
+Just want names?
+
+    select first_name, last_name from playwrights;
+
+
+Calculate age?
+
+    select last_name, year_of_death - year_of_birth from playwrights;
+    select avg(year_of_death - year_of_birth) from playwrights;
+
+None of these alter the data.
+--
+### Importing a Spreadsheet / CSV
 
 
 --
