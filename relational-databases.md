@@ -68,28 +68,24 @@ repeat 3x
 <table width="100%">
     <tbody>
     <tr>
-        <th>id</th>
         <th>first_name</th>
         <th>last_name</th>
         <th>year_of_birth</th>
         <th>year_of_death</th>
     </tr>
     <tr>
-        <td>1</td>
         <td>William</td>
         <td>Shakespeare</td>
         <td>1564</td>
         <td>1616</td>
     </tr>
     <tr>
-        <td>2</td>
         <td>Arthur</td>
         <td>Miller</td>
         <td>1915</td>
         <td>2005</td>
     </tr>
     <tr>
-        <td>3</td>
         <td>Samuel</td>
         <td>Beckett</td>
         <td>1906</td>
@@ -106,11 +102,11 @@ Some free/open source. Differ in some data types and advanced functionality, but
 MySQL, Oracle, PostgreSQL, SQL Server, Microsoft Access, FileMaker Pro, **SQLite**
 
 --
-### Creating a database
+### Creating databases
 
-- Database can have several tables
-- Table is like a worksheet or data frame
-- To create one, specify the column names and types
+- Database can have many tables
+- Table is analogous to a worksheet or data frame
+- Specify column names/types when creating (schema)
 
 SQLite Data Types ([sqlite.org](https://www.sqlite.org/datatype3.html))
 
@@ -121,47 +117,129 @@ SQLite Data Types ([sqlite.org](https://www.sqlite.org/datatype3.html))
 - BLOB
 
 --
-### Creating a table
+### Demo: The SQLite Prompt
 
+Double-click `sqlite3.exe` (or type `sqlite3` in your terminal)
+
+    SQLite version 3.8.5 2014-08-15 22:37:57
+    Enter ".help" for usage hints.
+    Connected to a transient in-memory database.
+    Use ".open FILENAME" to reopen on a persistent database.
+    sqlite>
+
+Stuck? **Semicolon** or **Control-C**
+
+Open file:
+
+    sqlite> .open lit.db
+
+--
+### Demo: Creating a table
 Create table:
-```
-sqlite> create table playwrights (
-   ...> first_name text,
-   ...> last_name text,
-   ...> year_of_birth integer,
-   ...> year_of_death integer
-   ...> );
-```
+
+    sqlite> create table playwrights (
+       ...> first_name text,
+       ...> last_name text,
+       ...> year_of_birth integer,
+       ...> year_of_death integer
+       ...> );
+
 List tables:
-```
-sqlite> .tables
-playwrights
-```
+
+    sqlite> .tables
+    playwrights
+
+
+--
+### Exercise: Run sqlite and open the database
+
+1. Put the `lit.db` file in the folder with `sqlite3.exe` (Windows)
+2. Double-click `sqlite3.exe`
+3. At the `sqlite>` prompt, type `.open lit.db`
+4. At the `sqlite>` prompt, type `.tables`
+
+Done? Try typing `.schema` at the `sqlite>` prompt
+
+--
+### What's inside?
+
+Tables. List them with `.tables`.
+
+    sqlite> .tables
+    playwrights
+
+To _query_ a table, you **SELECT** from it
+
+    sqlite> select * from playwrights;
+    William|Shakespeare|1564|1616
+
+--
+### Exercise: Change format
+
+`.mode` and `.headers`
+
+1. Turn on headers with `.headers on`.
+2. Type `.mode` alone to see options.
+3. Change the mode to `column`.
+
+
+    sqlite> select * from playwrights;
+    first_name  last_name    year_of_birth  year_of_death
+    ----------  -----------  -------------  -------------
+    William     Shakespeare  1564           1616
+
+
+Done? Try a different mode like `line`.
+
 --
 ### Populating a database
+
 
 - **INSERT** to add rows.
 - Unlike spreadsheets, *rows* have no inherent order.
 - *Column* order does matter!
 
-```
-sqlite> insert into playwrights values
-   ...> ('William','Shakespeare',1564,1616);
 
+    sqlite> insert into playwrights values
+      ...> ('Arthur','Miller',1915,2005);
       # first_name, last_name, birth_year, death_year
-```
-_Always end with a semicolon_
-TODO: Provide this file at this point
+
+Statements always end with a semicolon
 --
-### Querying data
+### Exercise: Add some rows
 
-.headers on
-.mode column
+Inserting:
 
-```
-sqlite>
+    insert into playwrights values ('First','Last',1900,2000);
 
-**SELECT**
+Selecting:
+
+    select * from playwrights;
+
+Sample Data:
+<table width="100%">
+    <tbody>
+    <tr>
+        <th>first_name</th>
+        <th>last_name</th>
+        <th>year_of_birth</th>
+        <th>year_of_death</th>
+    </tr>
+    <tr>
+        <td>Arthur</td>
+        <td>Miller</td>
+        <td>1915</td>
+        <td>2005</td>
+    </tr>
+    <tr>
+        <td>Samuel</td>
+        <td>Beckett</td>
+        <td>1906</td>
+        <td>1989</td>
+    </tr>
+</tbody>
+</table>
+
 
 --
 
