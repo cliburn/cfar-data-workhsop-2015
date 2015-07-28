@@ -30,18 +30,7 @@ output: relational-databases.html
     text-align: left;
   }
 </style>
-# TODOS:
 
-- review dataset
---
-
-Lesson Outline:
-References: http://datacarpentry.github.io/sql-ecology/sql.html
-
-10 minutes of lecture, 15 minutes of stuff (interactive
-repeat 3x
-
---
 # Introduction to Relational Databases
 ## Relational Databases and sqlite
 
