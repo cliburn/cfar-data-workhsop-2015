@@ -7,12 +7,12 @@ class CursorTable(object):
     def format_row(self, html, row):
             html.append("<tr>")
             for col in row:
-                html.append("<td>{0}</td>".format(col))
+                html.append(u"<td>{0}</td>".format(col))
             html.append("</tr>")
     def print_header(self, html, row):
             html.append("<tr>")
             for col in row.keys():
-                html.append("<th>{0}</th>".format(col))
+                html.append(u"<th>{0}</th>".format(col))
             html.append("</tr>")
     def generate_html(self):
         html = ["<table>"]
@@ -24,17 +24,20 @@ class CursorTable(object):
                 printed_headers = True
             self.format_row(html, row)
         html.append("</table>")
-        self.html = ''.join(html)
+        self.html = u''.join(html)
           
     def _repr_html_(self):
         return self.html
 
-
-def run_query(db_name, query):
-    conn = sqlite3.connect(db_name)
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
-    c.execute(query)
-    ct = CursorTable(c)
-    c.close()
-    return ct
+class SQLiteDatabase(object):
+    def __init__(self, db_name):
+        self.db_name = db_name
+    def query(self, query):
+        conn = sqlite3.connect(self.db_name)
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute(query)
+        ct = CursorTable(c)
+        c.close()
+        conn.close()
+        return ct
