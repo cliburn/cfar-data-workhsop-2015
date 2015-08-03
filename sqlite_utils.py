@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 class CursorTable(object):
     def __init__(self, cursor):
@@ -32,11 +33,25 @@ class CursorTable(object):
 class SQLiteDatabase(object):
     def __init__(self, db_name):
         self.db_name = db_name
+        self.limits = True
+    def limits_on(self):
+        self.limits = True
+    def limits_off(self):
+        self.limits = False
+    def limit_query(self, query):
+        if not self.limits:
+            return query
+        # Limits are on
+        if 'limit' in query.lower():
+            return query
+        if ';' in query:
+            query = query.split(';')[0]
+        return query + ' limit 10'
     def query(self, query):
         conn = sqlite3.connect(self.db_name)
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
-        c.execute(query)
+        c.execute(self.limit_query(query))
         ct = CursorTable(c)
         c.close()
         conn.close()
